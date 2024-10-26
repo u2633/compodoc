@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as _ from 'lodash';
 
 import { ts, SyntaxKind } from 'ts-morph';
@@ -5,6 +7,13 @@ import { ts, SyntaxKind } from 'ts-morph';
 import { TsPrinterUtil } from '../../../../../utils/ts-printer.util';
 
 import ImportsUtil from '../../../../../utils/imports.util';
+
+enum AngularProviderConfigProperties {
+    Useclass = 'useClass',
+    UseValue = 'useValue',
+    UseFactory = 'useFactory',
+    UseExisting = 'useExisting',
+};
 
 export class SymbolHelper {
     private readonly unknown = '???';
@@ -99,36 +108,23 @@ export class SymbolHelper {
      */
     public parseProviderConfiguration(node: ts.ObjectLiteralExpression): string {
         if (node.kind && node.kind === SyntaxKind.ObjectLiteralExpression) {
-            // Search for provide: HTTP_INTERCEPTORS
-            // and if true, return type: 'interceptor' + name
-            let interceptorName, hasInterceptor;
-            if (node.properties) {
-                if (node.properties.length > 0) {
-                    _.forEach(node.properties, property => {
-                        if (property.kind && property.kind === SyntaxKind.PropertyAssignment) {
-                            if (property.name.text === 'provide') {
-                                if (property.initializer.text === 'HTTP_INTERCEPTORS') {
-                                    hasInterceptor = true;
-                                }
-                            }
-                            if (
-                                property.name.text === 'useClass' ||
-                                property.name.text === 'useExisting'
-                            ) {
-                                interceptorName = property.initializer.text;
-                            }
-                        }
-                    });
+            const provideProperty = node.properties.find((props) => props.name.getText() === 'provide');
+
+            if (!provideProperty) {
+                throw new Error("provide property not found in provider object config");
+            }
+
+            const providerObjectProps = Object.values(AngularProviderConfigProperties)
+            for (let i = 0; i < providerObjectProps.length; i++) {
+                const providerProp = providerObjectProps[i];
+                const prop = node.properties.find((props) => props.name.getText() === providerProp);
+                if (prop) {
+                    return prop.getLastToken().getText();
                 }
             }
-            if (hasInterceptor) {
-                return interceptorName;
-            } else {
-                return new TsPrinterUtil().print(node);
-            }
-        } else {
-            return new TsPrinterUtil().print(node);
         }
+
+        return new TsPrinterUtil().print(node);
     }
 
     /**
@@ -269,7 +265,7 @@ export class SymbolHelper {
         type: string,
         multiLine?: boolean
     ): Array<ts.ObjectLiteralElementLike> {
-        return props.filter(node => node.name.text === type);
+        return props.filter(node => node.name.getText() === type);
     }
 }
 

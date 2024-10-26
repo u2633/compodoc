@@ -228,6 +228,7 @@ export class ImportsUtil {
                 decoratorType === 'template' &&
                 searchedImport.getModuleSpecifierValue().indexOf('.html') !== -1
             ) {
+                // @ts-ignore
                 const originalSourceFilePath = sourceFile.path;
                 const originalSourceFilePathFolder = originalSourceFilePath.substring(
                     0,
