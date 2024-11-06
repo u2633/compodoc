@@ -1,5 +1,5 @@
 import { SyntaxKind, ts } from 'ts-morph';
-import { detectIndent, getSubstringFromMultilineString } from '../../../../../utils';
+import { detectIndent } from '../../../../../utils';
 import { ClassHelper } from './class-helper';
 import { IParseDeepIdentifierResult, SymbolHelper } from './symbol-helper';
 
@@ -136,42 +136,79 @@ export class ComponentHelper {
     }
 
     public getInputSignals(props) {
-        let inputSignals = [];
-        props?.forEach((prop, i) => {
-            const regexpInput = /input(?:\.(required))?(?:<([\w-]+)>)?\(([\w-]+)?\)/;
-            const resInput = regexpInput.exec(prop.defaultValue);
-            if (resInput) {
-                const newInput = prop;
-                newInput.defaultValue = resInput[resInput.length - 1];
-                newInput.required = resInput[0]?.includes('.required') ?? false;
+        const inputSignals = [];
+        props?.forEach(prop => {
+            const config =
+                this.getSignalConfig('input', prop.defaultValue) ??
+                this.getSignalConfig('model', prop.defaultValue);
+
+            if (config) {
+                const newInput = {
+                    ...prop,
+                    ...config
+                };
+
                 inputSignals.push(newInput);
-            } else {
-                const regexpModel = /model(?:\.(required))?(?:<([\w-]+)>)?\(([\w-]+)?\)/;
-                const resModel = regexpModel.exec(prop.defaultValue);
-                if (resModel) {
-                    const newInput = prop;
-                    newInput.defaultValue = resModel[resModel.length - 1];
-                    newInput.required = resModel[0]?.includes('.required') ?? false;
-                    inputSignals.push(newInput);
-                }
             }
         });
         return inputSignals;
     }
 
     public getOutputSignals(props) {
-        let outputSignals = [];
-        props?.forEach((prop, i) => {
-            const regexp = /output(?:\.(required))?(?:<([\w-]+)>)?\(([\w-]+)?\)/;
-            const res = regexp.exec(prop.defaultValue);
-            if (res) {
-                const newOutput = prop;
-                newOutput.defaultValue = res[res.length - 1];
-                newOutput.required = res[0]?.includes('.required') ?? false;
-                outputSignals.push(newOutput);
+        const outputSignals = [];
+        props?.forEach(prop => {
+            const config =
+                this.getSignalConfig('output', prop.defaultValue) ??
+                this.getSignalConfig('model', prop.defaultValue);
+
+            if (config) {
+                const newInput = {
+                    ...prop,
+                    ...config
+                };
+
+                outputSignals.push(newInput);
             }
         });
         return outputSignals;
+    }
+
+    private getSignalConfig(type: 'input' | 'output' | 'model', defaultValue: string) {
+        // Matches a quote mark
+        const quotePattern = `['"\`]`;
+
+        // Matches a value for the input
+        const valuePattern = (capture = true) =>
+            `(${capture ? '' : '?:'}\\w+|${quotePattern}.+${quotePattern})`;
+
+        // Matches an optional space
+        const spacePattern = `(?: )*`;
+
+        // Matches the input's type
+        const typesPattern = `(?:<((?:${valuePattern(false)}(?:${spacePattern}\\|${spacePattern})?)+)>)?`;
+
+        // Matches the alias provided in the options
+        const aliasRegExp = new RegExp(`alias:${spacePattern}${quotePattern}(\\w+)${quotePattern}`);
+
+        // Matches a signal of the provided type
+        const signalRegExp = new RegExp(
+            `${type}(.required)?${typesPattern}\\(${valuePattern()}?(?:,${spacePattern}({.+}))?\\)`
+        );
+
+        const matches = signalRegExp.exec(defaultValue?.replace(/\n/g, ''));
+
+        if (matches) {
+            const [_match, required, type, defaultValue, options] = matches;
+
+            const name = options?.match(aliasRegExp)?.[1];
+
+            return {
+                required: !!required,
+                type,
+                defaultValue,
+                name
+            };
+        }
     }
 
     public getComponentStandalone(

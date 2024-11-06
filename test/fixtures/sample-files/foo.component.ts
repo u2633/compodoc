@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, input, Output, output } from '@angular/core';
 
 /**
  * FooComponent description
@@ -55,6 +55,36 @@ export class FooComponent {
      * An example output
      */
     @Output() exampleOutput: EventEmitter<{ foo: string }> = new EventEmitter();
+
+    /**
+     * An example input signal
+     */
+    public readonly inputSignal = input<'foo' | 'bar'>('foo');
+
+    /**
+     * An example required input signal
+     */
+    public readonly requiredInputSignal = input.required<string>('foo');
+
+    /**
+     * An example aliased input signal
+     */
+    public readonly aliasedInputSignal = input(null, { alias: 'aliasedInSignal' });
+
+    /**
+     * An example output signal
+     */
+    public readonly outputSignal = output<'foo' | 'bar'>('foo');
+
+    /**
+     * An example required output signal
+     */
+    public readonly requiredOutputSignal = output.required<string>('foo');
+
+    /**
+     * An example aliased output signal
+     */
+    public readonly aliasedOutputSignal = output(null, { alias: 'aliasedOutSignal' });
 
     /**
      * constructor description
