@@ -202,12 +202,20 @@ export class ComponentHelper {
 
             const name = options?.match(aliasRegExp)?.[1];
 
-            return {
+            const result = {
                 required: !!required,
                 type,
-                defaultValue,
-                name
+                defaultValue
             };
+
+            if (name) {
+                return {
+                    ...result,
+                    name
+                };
+            }
+
+            return result;
         }
     }
 
