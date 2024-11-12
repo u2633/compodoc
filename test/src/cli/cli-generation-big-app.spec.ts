@@ -1,7 +1,7 @@
 const eol = require('os').EOL;
 
 import { expect } from 'chai';
-import { temporaryDir, shell, pkg, exists, exec, read, shellAsync } from '../helpers';
+import { exists, read, shell, temporaryDir } from '../helpers';
 
 const tmp = temporaryDir();
 
@@ -978,17 +978,9 @@ describe('CLI simple generation - big app', () => {
     });
 
     it('should support inputs and outputs signals and model', () => {
-        let file = read(distFolder + '/classes/DumbParentComponent.html');
+        const file = read(distFolder + '/classes/DumbParentComponent.html');
         expect(file).to.contain('<a href="#label" >label</a>');
         expect(file).to.contain('<a href="#currentChange" >currentChange</a>');
-        file = read(distFolder + '/components/CompodocComponent.html');
-        expect(file).to.contain(`<h3 id="inputs">Inputs</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="checked"></a>
-                        <b>checked</b>`);
     });
 
     it('should support component styles url/urls', () => {
@@ -1017,5 +1009,908 @@ describe('CLI simple generation - big app', () => {
         expect(contactInfoInterfaceFile).to.contain(
             `<a href="../interfaces/Person.html#age" target="_self" >Person['age']</a>`
         );
+    });
+
+    describe('input signals', () => {
+        it('should support input signals', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputSignal"></a>
+                        <b>inputSignal</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:18</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Input Signals</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support input signals with a default value', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputSignalWithDefaultValue"></a>
+                        <b>inputSignalWithDefaultValue</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.defaultValue</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:19</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support input signals a default quoted value', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputSignalWithDefaultStringValue"></a>
+                        <b>inputSignalWithDefaultStringValue</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;value&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:20</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support input signals with an alias', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="aliasedSignal"></a>
+                        <b>aliasedSignal</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:21</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support required input signals', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                ` <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="requiredInputSignal"></a>
+                        <b>requiredInputSignal</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:23</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support required input signals with a type ', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="requiredInputSignalWithType"></a>
+                        <b>requiredInputSignalWithType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:24</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support input signals with a type', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputSignalWithType"></a>
+                        <b>inputSignalWithType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;value&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:26</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support input signals with a quoted type', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputSignalWithStringType"></a>
+                        <b>inputSignalWithStringType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&#x27;value&#x27;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;value&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:27</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support input signals with multiple types', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputSignalWithMultipleTypes"></a>
+                        <b>inputSignalWithMultipleTypes</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | number</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:28</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support input signals with multiple types, quoted and standard', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputSignalWithMultipleMixedTypes"></a>
+                        <b>inputSignalWithMultipleMixedTypes</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&#x27;asc&#x27; | &#x27;dsc&#x27; | number</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;asc&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:29</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+    });
+
+    describe('output signals', () => {
+        it('should support output signals', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="outputSignal"></a>
+                        <b>outputSignal</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:52</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Output Signals</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support output signals with a default value', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outputSignalWithDefaultValue"></a>
+                    <span class="name">
+                        <span ><b>outputSignalWithDefaultValue</b></span>
+                        <a href="#outputSignalWithDefaultValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>output(this.defaultValue)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>`
+            );
+        });
+
+        it('should support output signals a default quoted value', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outputSignalWithDefaultStringValue"></a>
+                    <span class="name">
+                        <span ><b>outputSignalWithDefaultStringValue</b></span>
+                        <a href="#outputSignalWithDefaultStringValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>output(&#x27;value&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>`
+            );
+        });
+
+        it('should support output signals with an alias', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="aliasedSignal"></a>
+                        <b>aliasedSignal</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:21</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support required output signals', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requiredOutputSignal"></a>
+                    <span class="name">
+                        <span ><b>requiredOutputSignal</b></span>
+                        <a href="#requiredOutputSignal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>output.required()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>`
+            );
+        });
+
+        it('should support required output signals with a type ', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requiredOutputSignalWithType"></a>
+                    <span class="name">
+                        <span ><b>requiredOutputSignalWithType</b></span>
+                        <a href="#requiredOutputSignalWithType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>output.required&lt;number&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>`
+            );
+        });
+
+        it('should support output signals with a type', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="outputSignalWithType"></a>
+                        <b>outputSignalWithType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:60</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support output signals with a quoted type', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outputSignalWithStringType"></a>
+                    <span class="name">
+                        <span ><b>outputSignalWithStringType</b></span>
+                        <a href="#outputSignalWithStringType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>output&lt;&#x27;value&#x27;&gt;(&#x27;value&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>`
+            );
+        });
+
+        it('should support output signals with multiple types', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="outputSignalWithMultipleTypes"></a>
+                        <b>outputSignalWithMultipleTypes</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | number</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:62</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support output signals with multiple types, quoted and standard', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                ` <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outputSignalWithMultipleMixedTypes"></a>
+                    <span class="name">
+                        <span ><b>outputSignalWithMultipleMixedTypes</b></span>
+                        <a href="#outputSignalWithMultipleMixedTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>output&lt;&#x27;asc&#x27; | &#x27;dsc&#x27; | number&gt;(&#x27;asc&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>`
+            );
+        });
+    });
+
+    describe('model signals', () => {
+        it('should support model signals', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modelSignal"></a>
+                        <b>modelSignal</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:35</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Model Signals</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support model signals with a default value', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modelSignalWithDefaultValue"></a>
+                        <b>modelSignalWithDefaultValue</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.defaultValue</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:36</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support model signals a default quoted value', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modelSignalWithDefaultStringValue"></a>
+                        <b>modelSignalWithDefaultStringValue</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;value&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:37</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support model signals with an alias', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="aliasedSignal"></a>
+                        <b>aliasedSignal</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:21</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support required model signals', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="requiredModelSignal"></a>
+                        <b>requiredModelSignal</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:40</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support required model signals with a type ', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="requiredModelSignalWithType"></a>
+                        <b>requiredModelSignalWithType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:41</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support model signals with a type', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modelSignalWithType"></a>
+                        <b>modelSignalWithType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;value&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:43</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support model signals with a quoted type', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modelSignalWithStringType"></a>
+                        <b>modelSignalWithStringType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&#x27;value&#x27;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;value&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:44</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support model signals with multiple types', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modelSignalWithMultipleTypes"></a>
+                        <b>modelSignalWithMultipleTypes</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | number</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:45</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>`
+            );
+        });
+
+        it('should support model signals with multiple types, quoted and standard', () => {
+            const file = read(distFolder + '/components/CompodocComponent.html');
+
+            expect(file).to.contain(
+                `<table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modelSignalWithMultipleMixedTypes"></a>
+                    <span class="name">
+                        <span ><b>modelSignalWithMultipleMixedTypes</b></span>
+                        <a href="#modelSignalWithMultipleMixedTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>model&lt;&#x27;asc&#x27; | &#x27;dsc&#x27; | number&gt;(&#x27;asc&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>`
+            );
+        });
     });
 });
