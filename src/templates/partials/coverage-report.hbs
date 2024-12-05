@@ -27,7 +27,11 @@
                         <a href="./{{linktype}}/{{linksubtype}}s.html#{{name}}">{{filePath}}</a>
                     {{/ifEqualString}}
                 {{else}}
-                <a href="./{{linktype}}s/{{name}}.html">{{filePath}}</a>
+                    {{#ifEqualString linktype 'entity'}}
+                        <a href="./entities/{{name}}.html">{{filePath}}</a>
+                    {{else}}
+                        <a href="./{{linktype}}s/{{name}}.html">{{filePath}}</a>
+                    {{/ifEqualString}}
                 {{/if}}
             </td>
             <td>{{type}}</td>
