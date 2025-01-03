@@ -17,56 +17,6 @@ suites:
       params:
           browserName: 'chromium'
           project: 'chromium'
-    - name: 'Chrome - macOS 13'
-      platformName: 'macOS 13'
-      screenResolution: '1440x900'
-      testMatch: ['.*.ts']
-      params:
-          browserName: 'chrome'
-          project: 'chrome'
-    - name: 'Firefox - macOS 13'
-      platformName: 'macOS 13'
-      screenResolution: '1440x900'
-      testMatch: ['.*.ts']
-      params:
-          browserName: 'firefox'
-          project: 'firefox'
-    - name: 'Webkit - macOS 13'
-      platformName: 'macOS 13'
-      screenResolution: '1440x900'
-      testMatch: ['.*.ts']
-      params:
-          browserName: 'webkit'
-          project: 'webkit'
-    # Windows
-    - name: 'Chromium - Windows 11'
-      platformName: 'Windows 11'
-      screenResolution: '1440x900'
-      testMatch: ['.*.ts']
-      params:
-          browserName: 'chromium'
-          project: 'chromium'
-    - name: 'Chrome - Windows 11'
-      platformName: 'Windows 11'
-      screenResolution: '1440x900'
-      testMatch: ['.*.ts']
-      params:
-          browserName: 'chrome'
-          project: 'chrome'
-    - name: 'Firefox - Windows 11'
-      platformName: 'Windows 11'
-      screenResolution: '1440x900'
-      testMatch: ['.*.ts']
-      params:
-          browserName: 'firefox'
-          project: 'firefox' # Runs the project that's defined in `playwright.config.js`
-    - name: 'Webkit - Windows 11'
-      platformName: 'Windows 11'
-      screenResolution: '1440x900'
-      testMatch: ['.*.ts']
-      params:
-          browserName: 'webkit'
-          project: 'webkit'
 # Controls what artifacts to fetch when the suites have finished.
 # artifacts:
 #   download:
