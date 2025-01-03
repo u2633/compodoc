@@ -1,0 +1,80 @@
+apiVersion: v1alpha
+kind: playwright
+sauce:
+    region: us-west-1
+    concurrency: 10 # Controls how many suites are executed at the same time.
+playwright:
+    version: package.json # See https://docs.saucelabs.com/web-apps/automated-testing/playwright/#supported-testing-platforms for a list of supported versions.
+    configFile: playwright.config.ts # See https://docs.saucelabs.com/web-apps/automated-testing/playwright/yaml/#configfile for a list of supported configuration files.
+# Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
+rootDir: ./
+suites:
+    # macOS
+    - name: 'Chromium - macOS 13'
+      platformName: 'macOS 13'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'chromium'
+          project: 'chromium'
+    - name: 'Chrome - macOS 13'
+      platformName: 'macOS 13'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'chrome'
+          project: 'chrome'
+    - name: 'Firefox - macOS 13'
+      platformName: 'macOS 13'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'firefox'
+          project: 'firefox'
+    - name: 'Webkit - macOS 13'
+      platformName: 'macOS 13'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'webkit'
+          project: 'webkit'
+    # Windows
+    - name: 'Chromium - Windows 11'
+      platformName: 'Windows 11'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'chromium'
+          project: 'chromium'
+    - name: 'Chrome - Windows 11'
+      platformName: 'Windows 11'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'chrome'
+          project: 'chrome'
+    - name: 'Firefox - Windows 11'
+      platformName: 'Windows 11'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'firefox'
+          project: 'firefox' # Runs the project that's defined in `playwright.config.js`
+    - name: 'Webkit - Windows 11'
+      platformName: 'Windows 11'
+      screenResolution: '1440x900'
+      testMatch: ['.*.ts']
+      params:
+          browserName: 'webkit'
+          project: 'webkit'
+# Controls what artifacts to fetch when the suites have finished.
+# artifacts:
+#   download:
+#     when: always
+#     match:
+#       - console.log
+#     directory: ./artifacts/
+
+reporters:
+    spotlight: # Prints an overview of failed or otherwise interesting jobs.
+        enabled: true

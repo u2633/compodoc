@@ -33,6 +33,7 @@
         "saucelabs-test-e2e-mocha": "./node_modules/.bin/wdio wdio-saucelabs.conf.js",
         "prelocal-test-e2e-mocha": "npm run test:simple-doc",
         "local-test-e2e-mocha": "./node_modules/.bin/wdio wdio.conf.js",
+        "local-test-e2e-playwright": "npx playwright test",
         "premerge-lcov": "mv coverage-refactoring/lcov.info coverage/lcov-refactoring.info",
         "merge-lcov": "./node_modules/.bin/lcov-result-merger 'coverage/lcov-*.info' 'coverage/lcov_merged.info'",
         "*********PUBLISH********": "*******************",
@@ -129,6 +130,7 @@
     },
     "devDependencies": {
         "@istanbuljs/nyc-config-typescript": "1.0.2",
+        "@playwright/test": "1.49.0",
         "@rollup/plugin-typescript": "12.1.2",
         "@types/chai": "5.0.1",
         "@types/fs-extra": "11.0.4",
@@ -164,6 +166,7 @@
         "rimraf": "6.0.1",
         "rollup": "4.29.1",
         "rollup-plugin-typescript2": "0.36.0",
+        "saucectl": "^0.190.1",
         "sinon": "19.0.2",
         "sonar-scanner": "3.1.0",
         "source-map-support": "0.5.21",

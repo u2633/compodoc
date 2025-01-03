@@ -6,6 +6,10 @@ on:
     pull_request:
         branches: [develop]
 
+env:
+    SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+    SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+
 jobs:
     build-and-test:
         if: "!contains(github.event.head_commit.message, 'skip ci')"
@@ -78,35 +82,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - uses: saucelabs/sauce-connect-action@v2
+            - name: Run saucectl
+              uses: saucelabs/saucectl-run-action@v4
               with:
-                  username: ${{ secrets.SAUCE_USERNAME }}
-                  accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-                  tunnelIdentifier: github-action-tunnel
-
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ matrix.node-version }}
-
-            - name: Cache node modules
-              uses: actions/cache@v4
-              with:
-                  path: node_modules
-                  key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.OS }}-build-${{ env.cache-name }}-
-                      ${{ runner.OS }}-build-
-                      ${{ runner.OS }}-
-
-            - name: Install Dependencies
-              run: npm ci
-
-            - name: Build
-              run: npm run build
-
-            - name: E2E tests
-              env:
-                  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-                  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-              run: npm run saucelabs-test-e2e-mocha
+                  concurrency: 10
