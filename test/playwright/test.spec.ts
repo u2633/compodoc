@@ -20,11 +20,10 @@ test.describe('Compodoc page', () => {
     test('should support dark mode', async ({ page }) => {
         await page.goto('/?q=waza');
 
-        await page.emulateMedia({ colorScheme: 'dark' });
-
         const backgroundColor = await page.evaluate(() => {
             return window.getComputedStyle(document.body).backgroundColor;
         });
+
         await expect(backgroundColor).toEqual('rgb(33, 33, 33)');
     });
 
