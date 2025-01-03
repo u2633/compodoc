@@ -25,5 +25,6 @@
     ],
     "lockFileMaintenance": {
         "enabled": false
-    }
+    },
+    "rangeStrategy": "bump"
 }
