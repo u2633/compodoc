@@ -104,4 +104,4 @@ jobs:
               run: npm run build
 
             - name: E2E tests
-              run: npm run local-test-e2e-playwright
+              run: npx playwright install && npm run local-test-e2e-playwright
