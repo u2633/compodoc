@@ -12,13 +12,13 @@
     "packageRules": [
         {
             "updateTypes": ["major", "minor", "patch"],
-            "matchPackageTypes": ["dependencies"],
+            "matchDepTypes": ["dependencies"],
             "automerge": false,
             "groupName": "Dependencies"
         },
         {
             "updateTypes": ["major", "minor", "patch"],
-            "matchPackageTypes": ["devDependencies"],
+            "matchDepTypes": ["devDependencies"],
             "automerge": false,
             "groupName": "Dev Dependencies"
         }
