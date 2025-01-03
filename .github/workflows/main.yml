@@ -103,5 +103,11 @@ jobs:
             - name: Build
               run: npm run build
 
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
+
+            - name: Install system dependencies for WebKit
+              run: npx playwright install-deps webkit
+
             - name: E2E tests
-              run: npx playwright install && npm run local-test-e2e-playwright
+              run: npm run local-test-e2e-playwright
