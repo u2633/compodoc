@@ -28,7 +28,7 @@
         "posttest": "rimraf test/dist",
         "test:watch": "npm-watch build",
         "*********TEST E2E********": "*******************",
-        "test:simple-doc": "ts-node ./bin/index-cli.js -p ./test/fixtures/sample-files/tsconfig.simple.json -d doc -s --port 4000 & sleep 20",
+        "test:simple-doc": "ts-node ./bin/index-cli.js -p ./test/fixtures/sample-files/tsconfig.simple.json -d doc -s --port 4000",
         "presaucelabs-test-e2e-mocha": "npm run test:simple-doc",
         "saucelabs-test-e2e-mocha": "./node_modules/.bin/wdio wdio-saucelabs.conf.js",
         "prelocal-test-e2e-mocha": "npm run test:simple-doc",
