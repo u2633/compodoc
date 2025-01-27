@@ -44,7 +44,6 @@ export class CliApplication extends Application {
         program
             .version(pkg.version)
             .usage('<src> [options]')
-            .argument('<src>')
             .option(
                 '-c, --config [config]',
                 'A configuration file : .compodocrc, .compodocrc.json, .compodocrc.yaml or compodoc property in package.json'
@@ -200,6 +199,7 @@ Note: Certain tabs will only be shown if applicable to a given dependency`,
                 'Max search results on the results page. To show all results, set to 0',
                 COMPODOC_DEFAULTS.maxSearchResults
             )
+            .allowExcessArguments()
             .parse(process.argv);
 
         let outputHelp = () => {
