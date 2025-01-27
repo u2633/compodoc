@@ -44,6 +44,7 @@ export class CliApplication extends Application {
         program
             .version(pkg.version)
             .usage('<src> [options]')
+            .argument('<src>')
             .option(
                 '-c, --config [config]',
                 'A configuration file : .compodocrc, .compodocrc.json, .compodocrc.yaml or compodoc property in package.json'
