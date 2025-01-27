@@ -74,7 +74,7 @@ describe('CLI simple generation - big app', () => {
         done();
     });
     after(() => {
-        tmp.clean(distFolder);
+        //tmp.clean(distFolder);
     });
 
     it('should display generated message', () => {
@@ -1108,7 +1108,7 @@ describe('CLI simple generation - big app', () => {
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>0, { alias: 'aliasedSignal' }</code>
+                        <i>Default value : </i><code>0, { alias: &#x27;aliasedSignal&#x27; }</code>
                     </td>
                 </tr>
                         <tr>
@@ -1419,7 +1419,7 @@ describe('CLI simple generation - big app', () => {
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>0, { alias: 'aliasedSignal' }</code>
+                        <i>Default value : </i><code>0, { alias: &#x27;aliasedSignal&#x27; }</code>
                     </td>
                 </tr>
                         <tr>
@@ -1714,7 +1714,7 @@ describe('CLI simple generation - big app', () => {
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>0, { alias: 'aliasedSignal' }</code>
+                        <i>Default value : </i><code>0, { alias: &#x27;aliasedSignal&#x27; }</code>
                     </td>
                 </tr>
                         <tr>
