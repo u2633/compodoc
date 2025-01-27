@@ -179,7 +179,7 @@ export class ComponentHelper {
 
         // Matches a value for the input
         const valuePattern = (capture = true) =>
-            `(${capture ? '' : '?:'}[\\w._]+|${quotePattern}.+${quotePattern})`;
+            `(${capture ? '' : '?:'}[^()]*(?:\\([^()]*\\)[^()]*)*)`;
 
         // Matches an optional space
         const spacePattern = `(?: )*`;
