@@ -1102,8 +1102,8 @@ describe('CLI simple generation - big app', () => {
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="aliasedSignal"></a>
-                        <b>aliasedSignal</b>
+                        <a name="inputSignalWithAlias"></a>
+                        <b>inputSignalWithAlias</b>
                     </td>
                 </tr>
                 <tr>
@@ -1410,25 +1410,30 @@ describe('CLI simple generation - big app', () => {
 
             expect(file).to.contain(
                 `<table class="table table-sm table-bordered">
-            <tbody>
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outputSignalWithAlias"></a>
+                    <span class="name">
+                        <span ><b>outputSignalWithAlias</b></span>
+                        <a href="#outputSignalWithAlias"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="aliasedSignal"></a>
-                        <b>aliasedSignal</b>
+                        <i>Default value : </i><code>output(0, { alias: &#x27;aliasedSignal&#x27; })</code>
                     </td>
                 </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>0, { alias: &#x27;aliasedSignal&#x27; }</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:21</a></div>
-                            </td>
-                        </tr>
-            </tbody>
-        </table>`
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>`
             );
         });
 
@@ -1708,8 +1713,8 @@ describe('CLI simple generation - big app', () => {
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="aliasedSignal"></a>
-                        <b>aliasedSignal</b>
+                        <a name="modelSignalWithAlias"></a>
+                        <b>modelSignalWithAlias</b>
                     </td>
                 </tr>
                 <tr>
@@ -1719,11 +1724,11 @@ describe('CLI simple generation - big app', () => {
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:21</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/about/compodoc/compodoc.component.ts:38</a></div>
                             </td>
                         </tr>
             </tbody>
-        </table>`
+        </table`
             );
         });
 
