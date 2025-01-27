@@ -1108,7 +1108,7 @@ describe('CLI simple generation - big app', () => {
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>0</code>
+                        <i>Default value : </i><code>0, { alias: 'aliasedSignal' }</code>
                     </td>
                 </tr>
                         <tr>
@@ -1419,7 +1419,7 @@ describe('CLI simple generation - big app', () => {
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>0</code>
+                        <i>Default value : </i><code>0, { alias: 'aliasedSignal' }</code>
                     </td>
                 </tr>
                         <tr>
@@ -1714,7 +1714,7 @@ describe('CLI simple generation - big app', () => {
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>0</code>
+                        <i>Default value : </i><code>0, { alias: 'aliasedSignal' }</code>
                     </td>
                 </tr>
                         <tr>
